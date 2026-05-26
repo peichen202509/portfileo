@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>嗨，我是小太陽！｜個人首頁</title>
+    <!-- 引入 Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Google Fonts 溫暖字型 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Lucide 圖標庫 -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        // 自訂 Tailwind 色彩
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans TC', 'sans-serif'],
+                    },
+                    colors: {
+                        cream: {
+                            50: '#FDFBF7',
+                            100: '#FAF6EE',
+                            200: '#F5EFE2',
+                            300: '#EADFC9',
+                        },
+                        sun: {
+                            50: '#FFF7ED',
+                            400: '#F4A261',
+                            500: '#E07A5F',
+                            600: '#C95A49',
+                        },
+                        charcoal: '#3D3A36',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 簡單的微動畫 */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1deg); }
+        }
+        .float-balloon {
+            animation: float 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-cream-100 text-charcoal font-sans antialiased selection:bg-sun-400 selection:text-white min-h-screen relative pb-12">
+
+    <!-- 頂部導覽列 (Mobile Friendly) -->
+    <nav class="sticky top-0 z-50 bg-cream-100/80 backdrop-blur-md border-b border-cream-200">
+        <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
+            <span class="font-black text-xl tracking-wider text-sun-500">SUNNY.🎈</span>
+            <div class="flex items-center space-x-4 md:space-x-6 text-xs md:text-sm font-medium">
+                <a href="#about" class="hover:text-sun-500 transition-colors hidden sm:inline-block">關於我</a>
+                <a href="#skills" class="hover:text-sun-500 transition-colors hidden sm:inline-block">超能力</a>
+                <a href="#contact" class="hover:text-sun-500 transition-colors hidden sm:inline-block">聯絡我</a>
+                <!-- 直接下載鍵 -->
+                <button onclick="downloadSelf()" class="bg-sun-500 hover:bg-sun-600 text-white px-3.5 py-1.5 rounded-full font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 animate-pulse hover:animate-none">
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                    <span>下載此網頁 📥</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主視覺區 (Hero Section) -->
+    <header class="max-w-4xl mx-auto px-6 pt-16 pb-12 flex flex-col md:flex-row items-center gap-8 md:gap-12">
+        <!-- 熱氣球視覺圖標 -->
+        <div class="relative w-40 h-40 md:w-48 md:h-48 flex items-center justify-center bg-cream-200 rounded-full border border-cream-300 shadow-inner float-balloon">
+            <div class="text-center">
+                <span class="text-7xl block mb-2">🎈</span>
+                <span class="absolute -top-1 -right-1 text-5xl">☀️</span>
+            </div>
+        </div>
+        <!-- 文字定位 -->
+        <div class="flex-1 text-center md:text-left">
+            <div class="inline-block bg-sun-50 text-sun-600 border border-sun-400/20 px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase mb-4">
+                熱情奔跑中 🏃‍♂️💨
+            </div>
+            <h1 class="text-4xl md:text-5xl font-black tracking-tight mb-4">
+                我是 <span class="text-sun-500 relative inline-block">小太陽<span class="absolute left-0 bottom-1 w-full h-2 bg-sun-400/20 -z-10"></span></span>
+            </h1>
+            <p class="text-lg md:text-xl font-medium leading-relaxed text-charcoal/80 bg-cream-200/50 p-4 rounded-2xl border border-cream-200 shadow-sm inline-block">
+                「別人都叫我小太陽，其實我只是個過度活躍、容易中暑的熱氣球！」
+            </p>
+        </div>
+    </header>
+
+    <!-- 關於我區 (About Section) -->
+    <section id="about" class="max-w-4xl mx-auto px-6 py-12 scroll-mt-20">
+        <div class="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-cream-200/60">
+            <div class="flex items-center gap-3 mb-6">
+                <i data-lucide="user" class="text-sun-500 w-6 h-6"></i>
+                <h2 class="text-2xl font-bold tracking-wide">關於小太陽的基本資訊</h2>
+            </div>
+            <div class="space-y-6 text-base md:text-lg leading-relaxed text-charcoal/90">
+                <p>
+                    大家好，我是小太陽——那個<strong>白天裝太陽、晚上裝月亮、半夜還在裝WiFi</strong>的奇妙生物。📶
+                </p>
+                <p>
+                    很多人以為我很溫暖，其實我發光不是因為我多正能量，而是因為<strong>我怕黑（物理意義上的）</strong>。💡
+                </p>
+                <p>
+                    我的人生物理目標是把每一天都過成喜劇電影，雖然目前常常不小心拍成災難片……不過沒關係，<strong>笑點絕對還是很足的！</strong>🎬🍿
+                </p>
+                <div class="pt-4 border-t border-cream-200 flex flex-wrap gap-3 items-center">
+                    <span class="text-sm font-semibold text-sun-600 bg-sun-50 px-4 py-1.5 rounded-full border border-sun-500/10">📍 專長：吃美食</span>
+                    <span class="text-sm font-semibold text-sun-600 bg-sun-50 px-4 py-1.5 rounded-full border border-sun-500/10">💬 專長：講廢話</span>
+                    <span class="text-sm font-semibold text-sun-600 bg-sun-50 px-4 py-1.5 rounded-full border border-sun-500/10">☀️ 專長：幫低潮的朋友曬乾霉運</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技能超能力區 (Skills Section) -->
+    <section id="skills" class="max-w-4xl mx-auto px-6 py-12 scroll-mt-20">
+        <div class="flex flex-col items-center text-center mb-10">
+            <div class="flex items-center gap-2 mb-2">
+                <i data-lucide="sparkles" class="text-sun-500 w-5 h-5"></i>
+                <span class="text-sm font-black tracking-widest text-sun-500 uppercase">My Superpowers</span>
+            </div>
+            <h2 class="text-3xl font-black">獨家研發的 3 項技能</h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- 技能 1 -->
+            <div class="bg-white p-6 rounded-2xl border border-cream-200 hover:border-sun-400/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center text-2xl mb-4">🔥</div>
+                    <h3 class="text-lg font-bold mb-2">即時笑話生成器</h3>
+                    <p class="text-xs font-bold text-sun-500 tracking-wider mb-3">能量燒烤大師</p>
+                    <p class="text-sm text-charcoal/80 leading-relaxed">
+                        別人遇到低潮，我直接把他的負能量拿去烤成焦糖口味，再附贈一句讓你冷到發抖的冷笑話。
+                    </p>
+                </div>
+            </div>
+            <!-- 技能 2 -->
+            <div class="bg-white p-6 rounded-2xl border border-cream-200 hover:border-sun-400/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center text-2xl mb-4">🔋</div>
+                    <h3 class="text-lg font-bold mb-2">情緒太陽能轉換器</h3>
+                    <p class="text-xs font-bold text-sun-500 tracking-wider mb-3">哭哭臉轉哈哈臉</p>
+                    <p class="text-sm text-charcoal/80 leading-relaxed">
+                        高效能捕捉你的憂鬱陰影，一秒幫你轉換成燦爛哈哈臉。副作用是可能讓你笑到噴飯。
+                    </p>
+                </div>
+            </div>
+            <!-- 技能 3 -->
+            <div class="bg-white p-6 rounded-2xl border border-cream-200 hover:border-sun-400/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center text-2xl mb-4">🛡️</div>
+                    <h3 class="text-lg font-bold mb-2">超強厚臉皮反光板</h3>
+                    <p class="text-xs font-bold text-sun-500 tracking-wider mb-3">負評絕緣防護網</p>
+                    <p class="text-sm text-charcoal/80 leading-relaxed">
+                        被酸民酸的時候，能把酸言酸語當場反射回去。甚至還能借力使力，烤成香香的肉串！
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 作品占位區 (Portfolio Section) -->
+    <section id="portfolio" class="max-w-4xl mx-auto px-6 py-12 scroll-mt-20">
+        <div class="flex flex-col items-center text-center mb-10">
+            <div class="flex items-center gap-2 mb-2">
+                <i data-lucide="folder-git" class="text-sun-500 w-5 h-5"></i>
+                <span class="text-sm font-black tracking-widest text-sun-500 uppercase">My Comedy Shows</span>
+            </div>
+            <h2 class="text-3xl font-black">個人主打代表作</h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- 作品 1 -->
+            <div class="bg-white rounded-2xl overflow-hidden border border-cream-200 shadow-sm flex flex-col">
+                <div class="h-44 bg-cream-200 flex flex-col items-center justify-center p-4 relative border-b border-cream-200">
+                    <span class="text-5xl mb-2">🍳💥</span>
+                    <span class="text-xs font-bold text-charcoal/50">PROJECT #01 (災難片)</span>
+                </div>
+                <div class="p-5 flex-1 flex flex-col justify-between">
+                    <div>
+                        <h4 class="font-bold text-lg mb-2">災難片級別廚藝秀</h4>
+                        <p class="text-sm text-charcoal/70 leading-relaxed mb-4">
+                            一場將廚房變成「喜劇版」爆破現場的紀錄。雖然荷包蛋焦了，但歡樂香氣滿分！
+                        </p>
+                    </div>
+                    <button onclick="showToast('🍳 廚房清理中，暫時不開放參觀！我們會把燒焦的蛋清理乾淨再通知您！')" class="w-full py-2 bg-cream-200/50 hover:bg-sun-400 hover:text-white text-charcoal/80 font-bold text-xs rounded-xl transition-all duration-200">
+                        查看災難現場
+                    </button>
+                </div>
+            </div>
+            <!-- 作品 2 -->
+            <div class="bg-white rounded-2xl overflow-hidden border border-cream-200 shadow-sm flex flex-col">
+                <div class="h-44 bg-cream-200 flex flex-col items-center justify-center p-4 relative border-b border-cream-200">
+                    <span class="text-5xl mb-2">📶💤</span>
+                    <span class="text-xs font-bold text-charcoal/50">PROJECT #02 (半夜限定)</span>
+                </div>
+                <div class="p-5 flex-1 flex flex-col justify-between">
+                    <div>
+                        <h4 class="font-bold text-lg mb-2">深夜 WiFi 訊號發射器</h4>
+                        <p class="text-sm text-charcoal/70 leading-relaxed mb-4">
+                            半夜不睡覺在網路上裝WiFi的成果展現，隨時提供熬夜者心靈飽飽的超連結。
+                        </p>
+                    </div>
+                    <button onclick="showToast('💻 半夜裝載中，請在凌晨 2:00 後再度連結。目前頻寬被拿去下載零食食譜了！')" class="w-full py-2 bg-cream-200/50 hover:bg-sun-400 hover:text-white text-charcoal/80 font-bold text-xs rounded-xl transition-all duration-200">
+                        連線測試
+                    </button>
+                </div>
+            </div>
+            <!-- 作品 3 -->
+            <div class="bg-white rounded-2xl overflow-hidden border border-cream-200 shadow-sm flex flex-col">
+                <div class="h-44 bg-cream-200 flex flex-col items-center justify-center p-4 relative border-b border-cream-200">
+                    <span class="text-5xl mb-2">🪵☀️</span>
+                    <span class="text-xs font-bold text-charcoal/50">PROJECT #03 (除濕科技)</span>
+                </div>
+                <div class="p-5 flex-1 flex flex-col justify-between">
+                    <div>
+                        <h4 class="font-bold text-lg mb-2">霉運曬乾架 2.0</h4>
+                        <p class="text-sm text-charcoal/70 leading-relaxed mb-4">
+                            一項革命性除霉服務。專治朋友內心積雨、發霉，直接拉到大太陽底下進行物理脫水。
+                        </p>
+                    </div>
+                    <button onclick="showToast('🍯☀️ 你的霉運已收到！正在進行物理脫水，預計烘烤成香噴噴的焦糖風味！')" class="w-full py-2 bg-cream-200/50 hover:bg-sun-400 hover:text-white text-charcoal/80 font-bold text-xs rounded-xl transition-all duration-200">
+                        掛上我的霉運
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 聯絡方式區 (Contact Section) -->
+    <section id="contact" class="max-w-4xl mx-auto px-6 py-12 pb-24 scroll-mt-20">
+        <div class="bg-gradient-to-br from-sun-500 to-sun-600 text-white rounded-3xl p-8 md:p-12 shadow-xl relative overflow-hidden">
+            <!-- 裝飾背景 -->
+            <div class="absolute -right-16 -bottom-16 text-9xl opacity-10 select-none">☀️</div>
+            
+            <div class="relative z-10 max-w-xl">
+                <h3 class="text-3xl font-black mb-4">來跟小太陽連線吧！</h3>
+                <p class="text-white/80 text-base md:text-lg mb-8 leading-relaxed">
+                    無論你是想要曬乾霉運、聽冷笑話、分享美食，還是純粹半夜需要 WiFi 訊號，都歡迎投遞訊息，熱氣球降落後我會馬上回覆！
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    <!-- Email -->
+                    <a href="mailto:sunny@example.com" class="flex items-center gap-3 bg-white/10 hover:bg-white/20 p-4 rounded-xl transition-all border border-white/10 group">
+                        <i data-lucide="mail" class="w-6 h-6 text-sun-50 group-hover:scale-110 transition-transform"></i>
+                        <div>
+                            <p class="text-xs text-white/60">寫信給我</p>
+                            <p class="text-sm font-bold">sunny@example.com</p>
+                        </div>
+                    </a>
+                    <!-- IG / Social Placeholder -->
+                    <a href="#" onclick="showToast('📱 IG 裝 WiFi 中！小太陽目前正在大氣層邊緣調整通訊設定，敬請期待！'); return false;" class="flex items-center gap-3 bg-white/10 hover:bg-white/20 p-4 rounded-xl transition-all border border-white/10 group">
+                        <i data-lucide="instagram" class="w-6 h-6 text-sun-50 group-hover:scale-110 transition-transform"></i>
+                        <div>
+                            <p class="text-xs text-white/60">追蹤過度活躍日常</p>
+                            <p class="text-sm font-bold">@little_sunny_balloon</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 聯絡留言表單 -->
+                <form onsubmit="event.preventDefault(); showToast('🚀 訊息已成功發射到大氣層！正在透過熱氣球快速送達！'); this.reset();" class="space-y-3">
+                    <div class="flex gap-3">
+                        <input type="text" placeholder="你的名字" required class="flex-1 bg-white/10 border border-white/20 text-white placeholder-white/50 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/40 text-sm">
+                        <input type="email" placeholder="聯絡 Email" required class="flex-1 bg-white/10 border border-white/20 text-white placeholder-white/50 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/40 text-sm">
+                    </div>
+                    <textarea placeholder="想要告訴小太陽的話..." rows="3" required class="w-full bg-white/10 border border-white/20 text-white placeholder-white/50 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/40 text-sm"></textarea>
+                    <button type="submit" class="w-full py-3 bg-white text-sun-600 font-bold rounded-xl hover:bg-cream-100 transition-colors shadow-md text-sm">
+                        發射訊號 🚀
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 精美動態 Toast 提示框 -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 translate-y-20 opacity-0 pointer-events-none transition-all duration-300 z-[100] max-w-sm w-full px-4">
+        <div class="bg-gradient-to-r from-sun-500 to-orange-500 text-white px-5 py-4 rounded-2xl shadow-2xl flex items-center gap-3 border border-white/20">
+            <span class="text-2xl">☀️</span>
+            <p id="toast-text" class="text-sm font-bold leading-snug"></p>
+        </div>
+    </div>
+
+    <!-- 頁尾 -->
+    <footer class="bg-cream-200 border-t border-cream-300 py-8 text-center text-xs text-charcoal/60">
+        <p class="mb-2">© 2026 小太陽 (Sunny Balloon). All Rights Reserved.</p>
+        <p>白天裝太陽 ☀️ 晚上裝月亮 🌙 半夜裝 WiFi 📶</p>
+    </footer>
+
+    <!-- JavaScript 功能實作 -->
+    <script>
+        // 初始化 Lucide 圖標
+        lucide.createIcons();
+
+        // 自訂非阻塞 Toast 提示
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toast-text');
+            toastText.innerText = message;
+            toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+            }, 3500);
+        }
+
+        // 核心網頁自體下載功能
+        function downloadSelf() {
+            try {
+                // 複製當前的 HTML 內容
+                const docType = "<!DOCTYPE html>\n";
+                const htmlContent = document.documentElement.outerHTML;
+                const fullContent = docType + htmlContent;
+
+                // 轉換為 Blob，並透過臨時連結觸發下載
+                const blob = new Blob([fullContent], { type: 'text/html;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                
+                const tempAnchor = document.createElement('a');
+                tempAnchor.href = url;
+                tempAnchor.download = 'sunny_portfolio.html'; // 檔案預設名稱
+                document.body.appendChild(tempAnchor);
+                
+                // 觸發點擊下載
+                tempAnchor.click();
+                
+                // 清理記憶體
+                document.body.removeChild(tempAnchor);
+                URL.revokeObjectURL(url);
+                
+                showToast('📥 網頁下載成功！快去打開 sunny_portfolio.html 瞧瞧吧！');
+            } catch (err) {
+                // 安全退回：若是環境限制則用備用方案提示
+                showToast('❌ 下載時遇到微風阻擋，請使用鍵盤 Ctrl+S / Cmd+S 將此預覽頁面直接儲存！');
+            }
+        }
+    </script>
+</body>
+</html>
