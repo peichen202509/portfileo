@@ -69,13 +69,14 @@
 
     <!-- 主視覺區 (Hero Section) -->
     <header class="max-w-4xl mx-auto px-6 pt-16 pb-12 flex flex-col md:flex-row items-center gap-8 md:gap-12">
-        <!-- 熱氣球視覺圖標 -->
-        <div class="relative w-40 h-40 md:w-48 md:h-48 flex items-center justify-center bg-cream-200 rounded-full border border-cream-300 shadow-inner float-balloon">
-            <div class="text-center">
-                <span class="text-7xl block mb-2">🎈</span>
-                <span class="absolute -top-1 -right-1 text-5xl">☀️</span>
-            </div>
+        <!-- 頭像照片區 (已更換為 001.jpg) -->
+        <div class="relative w-40 h-40 md:w-48 md:h-48 rounded-full border-4 border-white shadow-xl overflow-hidden float-balloon bg-white flex-shrink-0 flex items-center justify-center">
+            <!-- 指向你上傳到 GitHub 的 001.jpg 圖片 -->
+            <img src="001.jpg" alt="小太陽個人照" class="w-full h-full object-cover">
+            <!-- 右上角裝飾小太陽 -->
+            <span class="absolute top-1 right-1 text-4xl select-none">☀️</span>
         </div>
+        
         <!-- 文字定位 -->
         <div class="flex-1 text-center md:text-left">
             <div class="inline-block bg-sun-50 text-sun-600 border border-sun-400/20 px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase mb-4">
@@ -291,7 +292,7 @@
 
     <!-- JavaScript 功能實作 -->
     <script>
-        // 初始化 Lucide 圖標
+        // 初始化 Lucide 圖擺
         lucide.createIcons();
 
         // 自訂非阻塞 Toast 提示
