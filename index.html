@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>嗨，我是小太陽！｜個人首頁</title>
+    <title>嗨，我是小太陽！｜個人綜合首頁</title>
     <!-- 引入 Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 引入 Google Fonts 溫暖字型 -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <!-- Lucide 圖標庫 -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- 計步器圖表所需的 Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // 自訂 Tailwind 色彩
         tailwind.config = {
@@ -27,6 +29,7 @@
                         },
                         sun: {
                             50: '#FFF7ED',
+                            100: '#FFEDD5',
                             400: '#F4A261',
                             500: '#E07A5F',
                             600: '#C95A49',
@@ -50,229 +53,462 @@
 </head>
 <body class="bg-cream-100 text-charcoal font-sans antialiased selection:bg-sun-400 selection:text-white min-h-screen relative pb-12">
 
-    <!-- 頂部導覽列 (Mobile Friendly) -->
-    <nav class="sticky top-0 z-50 bg-cream-100/80 backdrop-blur-md border-b border-cream-200">
-        <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
-            <span class="font-black text-xl tracking-wider text-sun-500">SUNNY.🎈</span>
-            <div class="flex items-center space-x-4 md:space-x-6 text-xs md:text-sm font-medium">
-                <a href="#about" class="hover:text-sun-500 transition-colors hidden sm:inline-block">關於我</a>
-                <a href="#skills" class="hover:text-sun-500 transition-colors hidden sm:inline-block">超能力</a>
-                <a href="#contact" class="hover:text-sun-500 transition-colors hidden sm:inline-block">聯絡我</a>
+    <!-- 頂部導覽列 (支援 SPA 無縫分頁) -->
+    <nav class="sticky top-0 z-50 bg-cream-100/90 backdrop-blur-md border-b border-cream-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+            <!-- 點擊 LOGO 回首頁 -->
+            <button onclick="navigateTo('home')" class="font-black text-xl tracking-wider text-sun-500 focus:outline-none">SUNNY.🎈</button>
+            <div class="flex items-center space-x-3 sm:space-x-4 md:space-x-6 text-xs sm:text-sm font-bold">
+                <!-- 導覽頁面切換鈕 -->
+                <button onclick="navigateTo('home')" id="nav-btn-home" class="nav-link px-2 py-1 text-sun-500 border-b-2 border-sun-500 transition-all">首頁</button>
+                <button onclick="navigateTo('coffee')" id="nav-btn-coffee" class="nav-link px-2 py-1 text-charcoal/80 hover:text-sun-500 transition-all">咖啡專欄</button>
+                <button onclick="navigateTo('steps')" id="nav-btn-steps" class="nav-link px-2 py-1 text-charcoal/80 hover:text-sun-500 transition-all">計步器</button>
                 <!-- 直接下載鍵 -->
-                <button onclick="downloadSelf()" class="bg-sun-500 hover:bg-sun-600 text-white px-3.5 py-1.5 rounded-full font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 animate-pulse hover:animate-none">
-                    <i data-lucide="download" class="w-4 h-4"></i>
-                    <span>下載此網頁 📥</span>
+                <button onclick="downloadSelf()" class="bg-sun-500 hover:bg-sun-600 text-white px-2.5 py-1.5 sm:px-3.5 sm:py-1.5 rounded-full font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-1">
+                    <i data-lucide="download" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+                    <span class="hidden xs:inline text-[11px] sm:text-xs">下載網頁 📥</span>
                 </button>
             </div>
         </div>
     </nav>
 
-    <!-- 主視覺區 (Hero Section) -->
-    <header class="max-w-4xl mx-auto px-6 pt-16 pb-12 flex flex-col md:flex-row items-center gap-8 md:gap-12">
-        <!-- 頭像照片區 (已更換為 001.jpg 且移除重疊的小太陽裝飾) -->
-        <div class="relative w-40 h-40 md:w-48 md:h-48 rounded-full border-4 border-white shadow-xl overflow-hidden float-balloon bg-white flex-shrink-0 flex items-center justify-center">
-            <!-- 指向你上傳到 GitHub 的 001.jpg 圖片 -->
-            <img src="001.jpg" alt="小太陽個人照" class="w-full h-full object-cover">
-        </div>
-        
-        <!-- 文字定位 -->
-        <div class="flex-1 text-center md:text-left">
-            <div class="inline-block bg-sun-50 text-sun-600 border border-sun-400/20 px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase mb-4">
-                熱情奔跑中 🏃‍♂️💨
-            </div>
-            <h1 class="text-4xl md:text-5xl font-black tracking-tight mb-4">
-                我是 <span class="text-sun-500 relative inline-block">小太陽<span class="absolute left-0 bottom-1 w-full h-2 bg-sun-400/20 -z-10"></span></span>
-            </h1>
-            <p class="text-lg md:text-xl font-medium leading-relaxed text-charcoal/80 bg-cream-200/50 p-4 rounded-2xl border border-cream-200 shadow-sm inline-block">
-                「別人都叫我小太陽，其實我只是個過度活躍、容易中暑的熱氣球！」
-            </p>
-        </div>
-    </header>
 
-    <!-- 關於我區 (About Section) -->
-    <section id="about" class="max-w-4xl mx-auto px-6 py-12 scroll-mt-20">
-        <div class="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-cream-200/60">
-            <div class="flex items-center gap-3 mb-6">
-                <i data-lucide="user" class="text-sun-500 w-6 h-6"></i>
-                <h2 class="text-2xl font-bold tracking-wide">關於小太陽的基本資訊</h2>
+    <!-- ==================== 頁面 1: 首頁 (Home) ==================== -->
+    <div id="page-home" class="page-section">
+        <!-- 主視覺區 (Hero Section) -->
+        <header class="max-w-4xl mx-auto px-6 pt-12 pb-10 flex flex-col md:flex-row items-center gap-8 md:gap-12">
+            <!-- 頭像照片區 (已完美移除重疊太陽，乾淨俐落) -->
+            <div class="relative w-40 h-40 md:w-48 md:h-48 rounded-full border-4 border-white shadow-xl overflow-hidden float-balloon bg-white flex-shrink-0 flex items-center justify-center">
+                <img src="001.jpg" alt="小太陽個人照" class="w-full h-full object-cover">
             </div>
-            <div class="space-y-6 text-base md:text-lg leading-relaxed text-charcoal/90">
-                <p>
-                    大家好，我是小太陽——那個<strong>白天裝太陽、晚上裝月亮、半夜還在裝WiFi</strong>的奇妙生物。📶
-                </p>
-                <p>
-                    很多人以為我很溫暖，其實我發光不是因為我多正能量，而是因為<strong>我怕黑（物理意義上的）</strong>。💡
-                </p>
-                <p>
-                    我的人生物理目標是把每一天都過成喜劇電影，雖然目前常常不小心拍成災難片……不過沒關係，<strong>笑點絕對還是很足的！</strong>🎬🍿
-                </p>
-                <div class="pt-4 border-t border-cream-200 flex flex-wrap gap-3 items-center">
-                    <span class="text-sm font-semibold text-sun-600 bg-sun-50 px-4 py-1.5 rounded-full border border-sun-500/10">📍 專長：吃美食</span>
-                    <span class="text-sm font-semibold text-sun-600 bg-sun-50 px-4 py-1.5 rounded-full border border-sun-500/10">💬 專長：講廢話</span>
-                    <span class="text-sm font-semibold text-sun-600 bg-sun-50 px-4 py-1.5 rounded-full border border-sun-500/10">☀️ 專長：幫低潮的朋友曬乾霉運</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 技能超能力區 (Skills Section) -->
-    <section id="skills" class="max-w-4xl mx-auto px-6 py-12 scroll-mt-20">
-        <div class="flex flex-col items-center text-center mb-10">
-            <div class="flex items-center gap-2 mb-2">
-                <i data-lucide="sparkles" class="text-sun-500 w-5 h-5"></i>
-                <span class="text-sm font-black tracking-widest text-sun-500 uppercase">My Superpowers</span>
-            </div>
-            <h2 class="text-3xl font-black">獨家研發的 3 項技能</h2>
-        </div>
-        <div class="grid md:grid-cols-3 gap-6">
-            <!-- 技能 1 -->
-            <div class="bg-white p-6 rounded-2xl border border-cream-200 hover:border-sun-400/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
-                <div>
-                    <div class="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center text-2xl mb-4">🔥</div>
-                    <h3 class="text-lg font-bold mb-2">即時笑話生成器</h3>
-                    <p class="text-xs font-bold text-sun-500 tracking-wider mb-3">能量燒烤大師</p>
-                    <p class="text-sm text-charcoal/80 leading-relaxed">
-                        別人遇到低潮，我直接把他的負能量拿去烤成焦糖口味，再附贈一句讓你冷到發抖的冷笑話。
-                    </p>
-                </div>
-            </div>
-            <!-- 技能 2 -->
-            <div class="bg-white p-6 rounded-2xl border border-cream-200 hover:border-sun-400/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
-                <div>
-                    <div class="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center text-2xl mb-4">🔋</div>
-                    <h3 class="text-lg font-bold mb-2">情緒太陽能轉換器</h3>
-                    <p class="text-xs font-bold text-sun-500 tracking-wider mb-3">哭哭臉轉哈哈臉</p>
-                    <p class="text-sm text-charcoal/80 leading-relaxed">
-                        高效能捕捉你的憂鬱陰影，一秒幫你轉換成燦爛哈哈臉。副作用是可能讓你笑到噴飯。
-                    </p>
-                </div>
-            </div>
-            <!-- 技能 3 -->
-            <div class="bg-white p-6 rounded-2xl border border-cream-200 hover:border-sun-400/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
-                <div>
-                    <div class="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center text-2xl mb-4">🛡️</div>
-                    <h3 class="text-lg font-bold mb-2">超強厚臉皮反光板</h3>
-                    <p class="text-xs font-bold text-sun-500 tracking-wider mb-3">負評絕緣防護網</p>
-                    <p class="text-sm text-charcoal/80 leading-relaxed">
-                        被酸民酸的時候，能把酸言酸語當場反射回去。甚至還能借力使力，烤成香香的肉串！
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 作品占位區 (Portfolio Section) -->
-    <section id="portfolio" class="max-w-4xl mx-auto px-6 py-12 scroll-mt-20">
-        <div class="flex flex-col items-center text-center mb-10">
-            <div class="flex items-center gap-2 mb-2">
-                <i data-lucide="folder-git" class="text-sun-500 w-5 h-5"></i>
-                <span class="text-sm font-black tracking-widest text-sun-500 uppercase">My Comedy Shows</span>
-            </div>
-            <h2 class="text-3xl font-black">個人主打代表作</h2>
-        </div>
-        <div class="grid md:grid-cols-3 gap-6">
-            <!-- 作品 1 -->
-            <div class="bg-white rounded-2xl overflow-hidden border border-cream-200 shadow-sm flex flex-col">
-                <div class="h-44 bg-cream-200 flex flex-col items-center justify-center p-4 relative border-b border-cream-200">
-                    <span class="text-5xl mb-2">🍳💥</span>
-                    <span class="text-xs font-bold text-charcoal/50">PROJECT #01 (災難片)</span>
-                </div>
-                <div class="p-5 flex-1 flex flex-col justify-between">
-                    <div>
-                        <h4 class="font-bold text-lg mb-2">災難片級別廚藝秀</h4>
-                        <p class="text-sm text-charcoal/70 leading-relaxed mb-4">
-                            一場將廚房變成「喜劇版」爆破現場的紀錄。雖然荷包蛋焦了，但歡樂香氣滿分！
-                        </p>
-                    </div>
-                    <button onclick="showToast('🍳 廚房清理中，暫時不開放參觀！我們會把燒焦的蛋清理乾淨再通知您！')" class="w-full py-2 bg-cream-200/50 hover:bg-sun-400 hover:text-white text-charcoal/80 font-bold text-xs rounded-xl transition-all duration-200">
-                        查看災難現場
-                    </button>
-                </div>
-            </div>
-            <!-- 作品 2 -->
-            <div class="bg-white rounded-2xl overflow-hidden border border-cream-200 shadow-sm flex flex-col">
-                <div class="h-44 bg-cream-200 flex flex-col items-center justify-center p-4 relative border-b border-cream-200">
-                    <span class="text-5xl mb-2">📶💤</span>
-                    <span class="text-xs font-bold text-charcoal/50">PROJECT #02 (半夜限定)</span>
-                </div>
-                <div class="p-5 flex-1 flex flex-col justify-between">
-                    <div>
-                        <h4 class="font-bold text-lg mb-2">深夜 WiFi 訊號發射器</h4>
-                        <p class="text-sm text-charcoal/70 leading-relaxed mb-4">
-                            半夜不睡覺在網路上裝WiFi的成果展現，隨時提供熬夜者心靈飽飽的超連結。
-                        </p>
-                    </div>
-                    <button onclick="showToast('💻 半夜裝載中，請在凌晨 2:00 後再度連結。目前頻寬被拿去下載零食食譜了！')" class="w-full py-2 bg-cream-200/50 hover:bg-sun-400 hover:text-white text-charcoal/80 font-bold text-xs rounded-xl transition-all duration-200">
-                        連線測試
-                    </button>
-                </div>
-            </div>
-            <!-- 作品 3 -->
-            <div class="bg-white rounded-2xl overflow-hidden border border-cream-200 shadow-sm flex flex-col">
-                <div class="h-44 bg-cream-200 flex flex-col items-center justify-center p-4 relative border-b border-cream-200">
-                    <span class="text-5xl mb-2">🪵☀️</span>
-                    <span class="text-xs font-bold text-charcoal/50">PROJECT #03 (除濕科技)</span>
-                </div>
-                <div class="p-5 flex-1 flex flex-col justify-between">
-                    <div>
-                        <h4 class="font-bold text-lg mb-2">霉運曬乾架 2.0</h4>
-                        <p class="text-sm text-charcoal/70 leading-relaxed mb-4">
-                            一項革命性除霉服務。專治朋友內心積雨、發霉，直接拉到大太陽底下進行物理脫水。
-                        </p>
-                    </div>
-                    <button onclick="showToast('🍯☀️ 你的霉運已收到！正在進行物理脫水，預計烘烤成香噴噴的焦糖風味！')" class="w-full py-2 bg-cream-200/50 hover:bg-sun-400 hover:text-white text-charcoal/80 font-bold text-xs rounded-xl transition-all duration-200">
-                        掛上我的霉運
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 聯絡方式區 (Contact Section) -->
-    <section id="contact" class="max-w-4xl mx-auto px-6 py-12 pb-24 scroll-mt-20">
-        <div class="bg-gradient-to-br from-sun-500 to-sun-600 text-white rounded-3xl p-8 md:p-12 shadow-xl relative overflow-hidden">
-            <!-- 裝飾背景 -->
-            <div class="absolute -right-16 -bottom-16 text-9xl opacity-10 select-none">☀️</div>
             
-            <div class="relative z-10 max-w-xl">
-                <h3 class="text-3xl font-black mb-4">來跟小太陽連線吧！</h3>
-                <p class="text-white/80 text-base md:text-lg mb-8 leading-relaxed">
-                    無論你是想要曬乾霉運、聽冷笑話、分享美食，還是純粹半夜需要 WiFi 訊號，都歡迎投遞訊息，熱氣球降落後我會馬上回覆！
+            <!-- 文字定位 -->
+            <div class="flex-1 text-center md:text-left">
+                <div class="inline-block bg-sun-50 text-sun-600 border border-sun-400/20 px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase mb-4">
+                    熱情奔跑中 🏃‍♂️💨
+                </div>
+                <h1 class="text-4xl md:text-5xl font-black tracking-tight mb-4">
+                    我是 <span class="text-sun-500 relative inline-block">小太陽<span class="absolute left-0 bottom-1 w-full h-2 bg-sun-400/20 -z-10"></span></span>
+                </h1>
+                <p class="text-lg md:text-xl font-medium leading-relaxed text-charcoal/80 bg-cream-200/50 p-4 rounded-2xl border border-cream-200 shadow-sm inline-block">
+                    「別人都叫我小太陽，其實我只是個過度活躍、容易中暑的熱氣球！」
+                </p>
+            </div>
+        </header>
+
+        <!-- 關於我區 -->
+        <section id="about" class="max-w-4xl mx-auto px-6 py-6">
+            <div class="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-cream-200/60">
+                <div class="flex items-center gap-3 mb-6">
+                    <i data-lucide="user" class="text-sun-500 w-6 h-6"></i>
+                    <h2 class="text-2xl font-bold tracking-wide">關於小太陽的基本資訊</h2>
+                </div>
+                <div class="space-y-6 text-base md:text-lg leading-relaxed text-charcoal/90">
+                    <p>
+                        大家好，我是小太陽——那個<strong>白天裝太陽、晚上裝月亮、半夜還在裝WiFi</strong>的奇妙生物。📶
+                    </p>
+                    <p>
+                        很多人以為我很溫暖，其實我發光不是因為我多正能量，而是因為<strong>我怕黑（物理意義上的）</strong>。💡
+                    </p>
+                    <p>
+                        我的人生物理目標是把每一天都過成喜劇電影，雖然目前常常不小心拍成災難片……不過沒關係，<strong>笑點絕對還是很足的！</strong>🎬🍿
+                    </p>
+                    <div class="pt-4 border-t border-cream-200 flex flex-wrap gap-3 items-center">
+                        <span class="text-sm font-semibold text-sun-600 bg-sun-50 px-4 py-1.5 rounded-full border border-sun-500/10">📍 專長：吃美食</span>
+                        <span class="text-sm font-semibold text-sun-600 bg-sun-50 px-4 py-1.5 rounded-full border border-sun-500/10">💬 專長：講廢話</span>
+                        <span class="text-sm font-semibold text-sun-600 bg-sun-50 px-4 py-1.5 rounded-full border border-sun-500/10">☀️ 專長：幫低潮的朋友曬乾霉運</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 技能超能力區 -->
+        <section id="skills" class="max-w-4xl mx-auto px-6 py-10">
+            <div class="flex flex-col items-center text-center mb-8">
+                <div class="flex items-center gap-2 mb-2">
+                    <i data-lucide="sparkles" class="text-sun-500 w-5 h-5"></i>
+                    <span class="text-sm font-black tracking-widest text-sun-500 uppercase">My Superpowers</span>
+                </div>
+                <h2 class="text-3xl font-black">獨家研發的 3 項技能</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- 技能 1 -->
+                <div class="bg-white p-6 rounded-2xl border border-cream-200 hover:border-sun-400/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center text-2xl mb-4">🔥</div>
+                        <h3 class="text-lg font-bold mb-2">即時笑話生成器</h3>
+                        <p class="text-xs font-bold text-sun-500 tracking-wider mb-3">能量燒烤大師</p>
+                        <p class="text-sm text-charcoal/80 leading-relaxed">
+                            別人遇到低潮，我直接把他的負能量拿去烤成焦糖口味，再附贈一句讓你冷到發抖的冷笑話。
+                        </p>
+                    </div>
+                </div>
+                <!-- 技能 2 -->
+                <div class="bg-white p-6 rounded-2xl border border-cream-200 hover:border-sun-400/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center text-2xl mb-4">🔋</div>
+                        <h3 class="text-lg font-bold mb-2">情緒太陽能轉換器</h3>
+                        <p class="text-xs font-bold text-sun-500 tracking-wider mb-3">哭哭臉轉哈哈臉</p>
+                        <p class="text-sm text-charcoal/80 leading-relaxed">
+                            高效能捕捉你的憂鬱陰影，一秒幫你轉換成燦爛哈哈臉。副作用是可能讓你笑到噴飯。
+                        </p>
+                    </div>
+                </div>
+                <!-- 技能 3 -->
+                <div class="bg-white p-6 rounded-2xl border border-cream-200 hover:border-sun-400/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center text-2xl mb-4">🛡️</div>
+                        <h3 class="text-lg font-bold mb-2">超強厚臉皮反光板</h3>
+                        <p class="text-xs font-bold text-sun-500 tracking-wider mb-3">負評絕緣防護網</p>
+                        <p class="text-sm text-charcoal/80 leading-relaxed">
+                            被酸民酸的時候，能把酸言酸語當場反射回去。甚至還能借力使力，烤成香香的肉串！
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 代表作品區 (已完美連結至對應的分頁) -->
+        <section id="portfolio" class="max-w-4xl mx-auto px-6 py-10">
+            <div class="flex flex-col items-center text-center mb-8">
+                <div class="flex items-center gap-2 mb-2">
+                    <i data-lucide="folder-git" class="text-sun-500 w-5 h-5"></i>
+                    <span class="text-sm font-black tracking-widest text-sun-500 uppercase">My Comedy Shows</span>
+                </div>
+                <h2 class="text-3xl font-black">個人主打代表作</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- 作品 1：連結到咖啡專欄 -->
+                <div class="bg-white rounded-2xl overflow-hidden border border-cream-200 shadow-sm flex flex-col hover:shadow-md transition-all">
+                    <div class="h-44 bg-cream-200 flex flex-col items-center justify-center p-4 relative border-b border-cream-200">
+                        <span class="text-5xl mb-2">☕️🐱</span>
+                        <span class="text-xs font-bold text-charcoal/50">熱門知識專欄</span>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">麝香咖啡的傳奇與真相</h4>
+                            <p class="text-sm text-charcoal/70 leading-relaxed mb-4">
+                                解析全球最昂貴咖啡背後的生態奧秘與倫理掙議。用全新排版帶來深度好文！
+                            </p>
+                        </div>
+                        <button onclick="navigateTo('coffee')" class="w-full py-2.5 bg-sun-500 hover:bg-sun-600 text-white font-bold text-xs rounded-xl transition-all duration-200">
+                            閱讀完整專欄 ➔
+                        </button>
+                    </div>
+                </div>
+                <!-- 作品 2：連結到計步器 -->
+                <div class="bg-white rounded-2xl overflow-hidden border border-cream-200 shadow-sm flex flex-col hover:shadow-md transition-all">
+                    <div class="h-44 bg-cream-200 flex flex-col items-center justify-center p-4 relative border-b border-cream-200">
+                        <span class="text-5xl mb-2">🚶‍♂️✨</span>
+                        <span class="text-xs font-bold text-charcoal/50">小太陽工具箱</span>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">小太陽健康計步器</h4>
+                            <p class="text-sm text-charcoal/70 leading-relaxed mb-4">
+                                本地儲存、每日打卡月曆、小米健康智慧同步、自動記錄連續達標天數！
+                            </p>
+                        </div>
+                        <button onclick="navigateTo('steps')" class="w-full py-2.5 bg-sun-500 hover:bg-sun-600 text-white font-bold text-xs rounded-xl transition-all duration-200">
+                            開啟計步器 ➔
+                        </button>
+                    </div>
+                </div>
+                <!-- 作品 3：連結到外部個人行程安排網頁 -->
+                <div class="bg-white rounded-2xl overflow-hidden border border-cream-200 shadow-sm flex flex-col hover:shadow-md transition-all">
+                    <div class="h-44 bg-cream-200 flex flex-col items-center justify-center p-4 relative border-b border-cream-200">
+                        <span class="text-5xl mb-2">📅🤖</span>
+                        <span class="text-xs font-bold text-charcoal/50">AI 智慧小幫手</span>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">個人行程安排</h4>
+                            <p class="text-sm text-charcoal/70 leading-relaxed mb-4">
+                                透過AI助理，快速安排工作行程，即時問答滿足工作需求，讓安排行程沒有障礙。
+                            </p>
+                        </div>
+                        <a href="https://kanban-001-production-9d58.up.railway.app" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 bg-sun-500 hover:bg-sun-600 text-white font-bold text-xs rounded-xl transition-all duration-200 text-center block">
+                            開啟行程安排 ➔
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 聯絡方式區 -->
+        <section id="contact" class="max-w-4xl mx-auto px-6 py-12 pb-20">
+            <div class="bg-gradient-to-br from-sun-500 to-sun-600 text-white rounded-3xl p-8 md:p-12 shadow-xl relative overflow-hidden">
+                <div class="absolute -right-16 -bottom-16 text-9xl opacity-10 select-none">☀️</div>
+                <div class="relative z-10 max-w-xl">
+                    <h3 class="text-3xl font-black mb-4">來跟小太陽連線吧！</h3>
+                    <p class="text-white/80 text-base md:text-lg mb-8 leading-relaxed">
+                        無論你是想要曬乾霉運、聽冷笑話、分享美食，還是純粹半夜需要 WiFi 訊號，都歡迎投遞訊息，熱氣球降落後我會馬上回覆！
+                    </p>
+                    <form onsubmit="event.preventDefault(); showToast('🚀 訊息已成功發射到大氣層！正在透過熱氣球快速送達！'); this.reset();" class="space-y-3">
+                        <div class="flex gap-3">
+                            <input type="text" placeholder="你的名字" required class="flex-1 bg-white/10 border border-white/20 text-white placeholder-white/50 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/40 text-sm">
+                            <input type="email" placeholder="聯絡 Email" required class="flex-1 bg-white/10 border border-white/20 text-white placeholder-white/50 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/40 text-sm">
+                        </div>
+                        <textarea placeholder="想要告訴小太陽的話..." rows="3" required class="w-full bg-white/10 border border-white/20 text-white placeholder-white/50 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/40 text-sm"></textarea>
+                        <button type="submit" class="w-full py-3 bg-white text-sun-600 font-bold rounded-xl hover:bg-cream-100 transition-colors shadow-md text-sm">
+                            發射訊號 🚀
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+    <!-- ==================== 頁面 2: 咖啡專欄 (Civet Coffee Blog) ==================== -->
+    <div id="page-coffee" class="page-section hidden max-w-3xl mx-auto px-6 py-12">
+        <article class="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-cream-200/60">
+            <!-- 專欄 Header -->
+            <header class="mb-8 border-b border-cream-200 pb-8 text-center sm:text-left">
+                <span class="bg-amber-100 text-amber-800 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider">💡 深度科普專欄</span>
+                <h1 class="text-3xl sm:text-4xl font-black mt-4 mb-4 leading-tight text-charcoal">
+                    麝香咖啡：液體黃金的傳奇與真相
+                </h1>
+                <div class="flex flex-wrap items-center justify-center sm:justify-start gap-4 text-xs text-charcoal/60 font-medium">
+                    <span class="flex items-center gap-1"><i data-lucide="user" class="w-4 h-4"></i> 小太陽特派員</span>
+                    <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-4 h-4"></i> 2026 年 6 月 1 日</span>
+                    <span class="flex items-center gap-1"><i data-lucide="clock" class="w-4 h-4"></i> 閱讀時間約 5 分鐘</span>
+                </div>
+            </header>
+
+            <!-- 專欄 Body -->
+            <div class="space-y-6 text-charcoal/90 leading-relaxed text-base sm:text-lg">
+                <!-- 第一段：引言 -->
+                <p class="font-medium text-lg text-sun-600 bg-sun-50 p-4 rounded-xl border-l-4 border-sun-500">
+                    「它是全球最昂貴、最神祕，同時也最具爭議的精品咖啡。」
+                </p>
+                <p>
+                    麝香咖啡（Kopi Luwak）又被戲稱為「貓屎咖啡」。它並不是一種特定的咖啡豆品種，而是一項透過神祕加工機制誕生的奇幻飲品。
+                </p>
+
+                <!-- 第二段：靈魂主角 -->
+                <h3 class="text-xl font-bold text-charcoal flex items-center gap-2 pt-4">
+                    <span class="text-2xl">🐱</span> 1. 靈魂主角：亞洲椰子貓 (Luwak)
+                </h3>
+                <p>
+                    「麝香貓」學名為<strong>亞洲椰子貓（Asian Palm Civet）</strong>，是一種夜行性的雜食動物。牠們具有極其敏銳的嗅覺，會在森林中精挑細選出「最成熟、最紅、最甜美」的咖啡櫻桃果實食用。
+                </p>
+                <p>
+                    進入牠們胃部後，咖啡櫻桃外層的果肉被消化，而咖啡豆核則保留完整。在這個過程中，椰子貓消化道內獨特的<strong>胃蛋白酵素</strong>，就成為了改變咖啡豆風味的關鍵「秘密加工廠」。
+                </p>
+
+                <!-- 第三段：蛻變過程 -->
+                <h3 class="text-xl font-bold text-charcoal flex items-center gap-2 pt-4">
+                    <span class="text-2xl">🔄</span> 2. 從果實到咖啡豆的蛻變
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 py-4 text-sm text-center">
+                    <div class="bg-cream-50 p-4 rounded-xl border border-cream-200">
+                        <span class="text-2xl block mb-1">🍒</span>
+                        <p class="font-bold text-xs text-sun-500 mb-1">精選採食</p>
+                        <p class="text-xs text-charcoal/70">椰子貓夜間挑選最優質甜美的咖啡櫻桃</p>
+                    </div>
+                    <div class="bg-cream-50 p-4 rounded-xl border border-cream-200">
+                        <span class="text-2xl block mb-1">🧪</span>
+                        <p class="font-bold text-xs text-sun-500 mb-1">體內發酵</p>
+                        <p class="text-xs text-charcoal/70">經歷 24-36 小時體內蛋白酶分解去苦</p>
+                    </div>
+                    <div class="bg-cream-50 p-4 rounded-xl border border-cream-200">
+                        <span class="text-2xl block mb-1">💩</span>
+                        <p class="font-bold text-xs text-sun-500 mb-1">人工採集</p>
+                        <p class="text-xs text-charcoal/70">農民從排泄物中小心回收未消化的豆核</p>
+                    </div>
+                    <div class="bg-cream-50 p-4 rounded-xl border border-cream-200">
+                        <span class="text-2xl block mb-1">🔥</span>
+                        <p class="font-bold text-xs text-sun-500 mb-1">精細加工</p>
+                        <p class="text-xs text-charcoal/70">徹底清洗、高溫烘焙、鎖住極致芬芳</p>
+                    </div>
+                </div>
+
+                <!-- 第四段：風味與科學 -->
+                <h3 class="text-xl font-bold text-charcoal flex items-center gap-2 pt-4">
+                    <span class="text-2xl">☕</span> 3. 身價不凡：為什麼那麼貴？
+                </h3>
+                <p>
+                    正宗的<strong>野生麝香咖啡</strong>全球年產量僅約 250 至 500 公斤。採集極度困難，這使得它的批發身價高達<strong>每磅 $600 美元</strong>以上！在精品咖啡店裡，一杯現煮的麝香咖啡零售價高達 $35 至 $100 美元。
+                </p>
+                <p>
+                    <strong>那麼風味如何呢？</strong> 消化過程中的蛋白酶會大幅分解咖啡豆中的蛋白質（咖啡苦味的主要來源），並轉化成短肽與氨基酸。這賦予了麝香咖啡<strong>極其醇厚、帶有焦糖、巧克力與泥土芳香，且完全沒有一般咖啡苦味</strong>的獨特「零苦味、糖漿般滑順」口感。
+                </p>
+
+                <!-- 第五段：背後的陰影與比較 -->
+                <h3 class="text-xl font-bold text-charcoal flex items-center gap-2 pt-4">
+                    <span class="text-2xl">⚠️</span> 4. 浪漫背後的殘酷陰影：倫理困境
+                </h3>
+                <p>
+                    隨著商業利益暴增，許多生產者開始捕捉野生椰子貓，並將其囚禁在狹小、不衛生的鐵籠中，強迫牠們吞食過量的咖啡果實。這導致牠們營養不良、精神崩潰、出現自殘與極高的死亡率。這早已失去最初「在森林中偶然撿拾」的生態浪漫。
                 </p>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                    <!-- Email -->
-                    <a href="mailto:sunny@example.com" class="flex items-center gap-3 bg-white/10 hover:bg-white/20 p-4 rounded-xl transition-all border border-white/10 group">
-                        <i data-lucide="mail" class="w-6 h-6 text-sun-50 group-hover:scale-110 transition-transform"></i>
-                        <div>
-                            <p class="text-xs text-white/60">寫信給我</p>
-                            <p class="text-sm font-bold">sunny@example.com</p>
-                        </div>
-                    </a>
-                    <!-- IG / Social Placeholder -->
-                    <a href="#" onclick="showToast('📱 IG 裝 WiFi 中！小太陽目前正在大氣層邊緣調整通訊設定，敬請期待！'); return false;" class="flex items-center gap-3 bg-white/10 hover:bg-white/20 p-4 rounded-xl transition-all border border-white/10 group">
-                        <i data-lucide="instagram" class="w-6 h-6 text-sun-50 group-hover:scale-110 transition-transform"></i>
-                        <div>
-                            <p class="text-xs text-white/60">追蹤過度活躍日常</p>
-                            <p class="text-sm font-bold">@little_sunny_balloon</p>
-                        </div>
-                    </a>
+                <div class="overflow-x-auto my-6 border border-cream-200 rounded-xl">
+                    <table class="w-full border-collapse text-sm text-left">
+                        <thead class="bg-cream-200">
+                            <tr>
+                                <th class="p-3 font-bold text-charcoal">對比項目</th>
+                                <th class="p-3 font-bold text-charcoal">野生採集 (Wild Sourced)</th>
+                                <th class="p-3 font-bold text-charcoal">人工籠養 (Caged Farming)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-cream-100">
+                            <tr>
+                                <td class="p-3 font-semibold">生產模式</td>
+                                <td class="p-3 text-green-700 font-medium">生態友善、自由挑食、品質最佳</td>
+                                <td class="p-3 text-red-600 font-medium">鐵籠強迫餵食、品質參差不齊</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-semibold">動物福利</td>
+                                <td class="p-3">完美（椰子貓在林間自由奔跑）</td>
+                                <td class="p-3 text-red-600">慘烈（涉及嚴重的虐待與精神壓力）</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-semibold">市占真相</td>
+                                <td class="p-3">僅佔市場約 20%</td>
+                                <td class="p-3 font-bold">高達 80%（多數標榜野生的其實是籠養）</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                <!-- 聯絡留言表單 -->
-                <form onsubmit="event.preventDefault(); showToast('🚀 訊息已成功發射到大氣層！正在透過熱氣球快速送達！'); this.reset();" class="space-y-3">
-                    <div class="flex gap-3">
-                        <input type="text" placeholder="你的名字" required class="flex-1 bg-white/10 border border-white/20 text-white placeholder-white/50 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/40 text-sm">
-                        <input type="email" placeholder="聯絡 Email" required class="flex-1 bg-white/10 border border-white/20 text-white placeholder-white/50 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/40 text-sm">
-                    </div>
-                    <textarea placeholder="想要告訴小太陽的話..." rows="3" required class="w-full bg-white/10 border border-white/20 text-white placeholder-white/50 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/40 text-sm"></textarea>
-                    <button type="submit" class="w-full py-3 bg-white text-sun-600 font-bold rounded-xl hover:bg-cream-100 transition-colors shadow-md text-sm">
-                        發射訊號 🚀
-                    </button>
-                </form>
+                <!-- 結語 -->
+                <div class="bg-orange-50 border border-orange-200 rounded-2xl p-6 mt-8">
+                    <h4 class="font-bold text-sun-600 mb-2 flex items-center gap-1.5">
+                        <i data-lucide="heart" class="w-5 h-5"></i> 小太陽觀點
+                    </h4>
+                    <p class="text-sm leading-relaxed text-charcoal/90">
+                        品味卓越的同時，守護自然更為珍貴。身為小太陽，我希望大家在追求極致味覺體驗時，請務必認明<strong>野生採集認證（Wild Certified）</strong>，或者乾脆選擇其他同樣好喝、甚至更有永續精神的傳統公平貿易精品咖啡喔！🐾☀️
+                    </p>
+                </div>
+            </div>
+            
+            <button onclick="navigateTo('home')" class="mt-8 flex items-center justify-center gap-2 mx-auto px-6 py-2.5 bg-cream-200 hover:bg-sun-500 hover:text-white rounded-xl text-xs font-bold transition-all">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> 回到首頁
+            </button>
+        </article>
+    </div>
+
+
+    <!-- ==================== 頁面 3: 計步器工具 (Step Tracker) ==================== -->
+    <div id="page-steps" class="page-section hidden max-w-xl mx-auto px-4 py-8">
+        <!-- 主控制卡片 -->
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-cream-200/60 mb-6">
+            <h2 class="text-2xl font-black text-sun-500 flex items-center gap-2 mb-4">
+                <span>🚶‍♂️</span> 小太陽每日步數紀錄
+            </h2>
+            
+            <!-- 火焰連續天數 -->
+            <div id="streakContainer" class="bg-gradient-to-r from-orange-400 to-sun-500 text-white p-3.5 rounded-2xl text-center font-bold mb-5 flex justify-center items-center gap-2 shadow-sm" style="display:none;">
+                <span>🔥</span> 連續達標 10,000 步：<span id="streakDays" class="text-xl font-extrabold">0</span> 天！
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-charcoal/60 mb-1.5 uppercase tracking-wider">選擇登記日期</label>
+                    <input type="date" id="dateInput" class="w-full bg-cream-50 border border-cream-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sun-400/50 text-sm font-medium">
+                </div>
+                
+                <div>
+                    <label class="block text-xs font-bold text-charcoal/60 mb-1.5 uppercase tracking-wider">今日步數 (每日目標: 10,000)</label>
+                    <input type="number" id="stepsInput" placeholder="請手動輸入或點選下方快捷鍵" min="0" oninput="updateProgressBar()" class="w-full bg-cream-50 border border-cream-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sun-400/50 text-sm font-medium">
+                </div>
+
+                <!-- 快捷鍵 Q 彈回饋 -->
+                <div class="flex gap-2.5">
+                    <button type="button" onclick="addSteps(1000)" class="flex-1 bg-cream-100 hover:bg-cream-200 active:scale-95 text-charcoal font-bold py-2.5 rounded-xl text-xs border border-cream-200 transition-all">+1,000</button>
+                    <button type="button" onclick="addSteps(5000)" class="flex-1 bg-cream-100 hover:bg-cream-200 active:scale-95 text-charcoal font-bold py-2.5 rounded-xl text-xs border border-cream-200 transition-all">+5,000</button>
+                    <button type="button" onclick="setTargetSteps()" class="flex-1 bg-sun-50 hover:bg-sun-100 active:scale-95 text-sun-600 font-bold py-2.5 rounded-xl text-xs border border-sun-200 transition-all">填滿一萬 👑</button>
+                </div>
+
+                <!-- 達成率進度條 -->
+                <div class="relative bg-cream-100 h-6 rounded-full overflow-hidden border border-cream-200 mt-4">
+                    <div id="progressBar" class="bg-gradient-to-r from-sun-400 to-sun-500 h-full w-0 transition-all duration-300"></div>
+                    <div id="progressText" class="absolute inset-0 flex items-center justify-center text-[11px] font-black text-charcoal">達成率：0%</div>
+                </div>
+
+                <button type="button" onclick="saveRecord()" class="w-full py-3.5 bg-sun-500 hover:bg-sun-600 active:scale-98 text-white font-black rounded-xl text-sm transition-all shadow-md mt-2">
+                    儲存當日紀錄
+                </button>
+            </div>
+
+            <!-- 智慧同步 -->
+            <div class="mt-6 pt-5 border-t border-dashed border-cream-200">
+                <label class="block text-xs font-bold text-charcoal/60 mb-1 uppercase tracking-wider">📋 小米/Zepp 數據智慧同步</label>
+                <input type="text" id="smartInput" placeholder="在此貼上從小米運動複製的分享文字..." onpaste="handleSmartPaste(event)" class="w-full bg-cream-50 border border-cream-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sun-400/50 text-xs">
+                <small class="text-[10px] text-charcoal/50 leading-relaxed block mt-2">
+                    💡 使用方法：在健康 App 複製分享文字後，直接在此貼上，系統會智慧解析日期與步數，並自動進行儲存。
+                </small>
             </div>
         </div>
-    </section>
+
+        <!-- 月度統計打卡牆 -->
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-cream-200/60 mb-6">
+            <h3 class="text-lg font-black mb-4 flex items-center gap-1.5">
+                <i data-lucide="calendar" class="text-sun-500 w-5 h-5"></i> 當月打卡日曆
+            </h3>
+            
+            <div class="grid grid-cols-3 gap-2.5 text-center mb-5">
+                <div class="bg-cream-50 p-2.5 rounded-2xl border border-cream-100">
+                    <div id="totalSteps" class="text-lg font-black text-sun-500">0</div>
+                    <div class="text-[10px] text-charcoal/50 font-bold">當月總步數</div>
+                </div>
+                <div class="bg-cream-50 p-2.5 rounded-2xl border border-cream-100">
+                    <div id="avgSteps" class="text-lg font-black text-sun-500">0</div>
+                    <div class="text-[10px] text-charcoal/50 font-bold">日平均步數</div>
+                </div>
+                <div class="bg-cream-50 p-2.5 rounded-2xl border border-cream-100">
+                    <div id="achievedDays" class="text-lg font-black text-sun-500">0天</div>
+                    <div class="text-[10px] text-charcoal/50 font-bold">達標天數</div>
+                </div>
+            </div>
+
+            <div id="calendarGrid" class="grid grid-cols-7 gap-1.5 text-center text-xs font-bold">
+                <!-- 由 JS 動態生成 -->
+            </div>
+        </div>
+
+        <!-- 趨勢分析 -->
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-cream-200/60 mb-6">
+            <h3 class="text-lg font-black mb-4 flex items-center gap-1.5">
+                <i data-lucide="trending-up" class="text-sun-500 w-5 h-5"></i> 近 7 次趨勢分析
+            </h3>
+            <div class="w-full h-44">
+                <canvas id="trendChart"></canvas>
+            </div>
+        </div>
+
+        <!-- 歷史數據表格 -->
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-cream-200/60">
+            <h3 class="text-lg font-black mb-3 flex items-center gap-1.5">
+                <i data-lucide="history" class="text-sun-500 w-5 h-5"></i> 歷史清單
+            </h3>
+            
+            <div class="overflow-y-auto max-h-60 border border-cream-100 rounded-xl mb-4 text-xs sm:text-sm">
+                <table class="w-full border-collapse text-left">
+                    <thead class="bg-cream-50 sticky top-0">
+                        <tr>
+                            <th class="p-3 font-bold text-charcoal/60">日期</th>
+                            <th class="p-3 font-bold text-charcoal/60">步數</th>
+                            <th class="p-3 font-bold text-charcoal/60 text-center">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyBody" class="divide-y divide-cream-100 font-medium">
+                        <!-- 由 JS 生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 資料管理按鈕 -->
+            <div class="grid grid-cols-3 gap-2">
+                <button onclick="exportToCSV()" class="py-2 bg-cream-50 hover:bg-cream-100 border border-cream-200 rounded-xl text-[10px] sm:text-xs font-bold transition-colors">CSV 匯出</button>
+                <button onclick="exportBackup()" class="py-2 bg-cream-50 hover:bg-cream-100 border border-cream-200 rounded-xl text-[10px] sm:text-xs font-bold transition-colors">備份導出</button>
+                <button onclick="document.getElementById('importFile').click()" class="py-2 bg-cream-50 hover:bg-cream-100 border border-cream-200 rounded-xl text-[10px] sm:text-xs font-bold transition-colors">還原導入</button>
+                <input type="file" id="importFile" style="display:none" accept=".json" onchange="importBackup(event)">
+            </div>
+        </div>
+    </div>
+
 
     <!-- 精美動態 Toast 提示框 -->
     <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 translate-y-20 opacity-0 pointer-events-none transition-all duration-300 z-[100] max-w-sm w-full px-4">
@@ -283,17 +519,18 @@
     </div>
 
     <!-- 頁尾 -->
-    <footer class="bg-cream-200 border-t border-cream-300 py-8 text-center text-xs text-charcoal/60">
+    <footer class="bg-cream-200 border-t border-cream-300 py-8 text-center text-xs text-charcoal/60 mt-20">
         <p class="mb-2">© 2026 小太陽 (Sunny Balloon). All Rights Reserved.</p>
         <p>白天裝太陽 ☀️ 晚上裝月亮 🌙 半夜裝 WiFi 📶</p>
     </footer>
 
-    <!-- JavaScript 功能實作 -->
+
+    <!-- ==================== JavaScript 功能實作 ==================== -->
     <script>
-        // 初始化 Lucide 圖擺
+        // 1. 初始化 Lucide 圖標
         lucide.createIcons();
 
-        // 自訂非阻塞 Toast 提示
+        // 2. 自訂非阻礙式 Toast 提示
         function showToast(message) {
             const toast = document.getElementById('toast');
             const toastText = document.getElementById('toast-text');
@@ -306,36 +543,346 @@
             }, 3500);
         }
 
-        // 核心網頁自體下載功能
+        // 3. SPA 路由無縫切換系統
+        function navigateTo(pageId) {
+            // 隱藏所有頁面
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(sec => sec.classList.add('hidden'));
+
+            // 顯示目標頁面
+            document.getElementById('page-' + pageId).classList.remove('hidden');
+
+            // 更新導覽列按鈕的活躍樣式
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('text-sun-500', 'border-b-2', 'border-sun-500');
+                link.classList.add('text-charcoal/80');
+            });
+
+            const activeBtn = document.getElementById('nav-btn-' + pageId);
+            if (activeBtn) {
+                activeBtn.classList.add('text-sun-500', 'border-b-2', 'border-sun-500');
+                activeBtn.classList.remove('text-charcoal/80');
+            }
+
+            // 特殊邏輯：如果是切換到計步器，重新整理圖表
+            if (pageId === 'steps') {
+                setTimeout(() => {
+                    renderChart();
+                }, 100);
+            }
+
+            // 平滑滾動回頂端
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+
+        // ==================== 計步器核心 JavaScript 邏輯 ====================
+        const TARGET = 10000;
+        let stepRecords = JSON.parse(localStorage.getItem('stepRecords')) || {};
+        let chartInstance = null;
+
+        // 初始化預設今日日期
+        document.getElementById('dateInput').valueAsDate = new Date();
+
+        function addSteps(val) {
+            const input = document.getElementById('stepsInput');
+            input.value = (parseInt(input.value, 10) || 0) + val;
+            updateProgressBar();
+        }
+        
+        function setTargetSteps() {
+            document.getElementById('stepsInput').value = TARGET;
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            const steps = parseInt(document.getElementById('stepsInput').value, 10) || 0;
+            let percent = Math.min(Math.round((steps / TARGET) * 100), 100);
+            const bar = document.getElementById('progressBar');
+            const text = document.getElementById('progressText');
+            bar.style.width = percent + '%';
+            
+            if (steps >= TARGET) {
+                text.innerText = `已達標！${Math.round((steps / TARGET) * 100)}% 👑`;
+                text.style.color = "#FFFFFF";
+            } else {
+                text.innerText = `達成率：${percent}% (${steps.toLocaleString()}/${TARGET.toLocaleString()})`;
+                text.style.color = "#3D3A36";
+            }
+        }
+
+        function saveRecord() {
+            const dateStr = document.getElementById('dateInput').value;
+            const steps = parseInt(document.getElementById('stepsInput').value, 10);
+            if (!dateStr || isNaN(steps) || steps < 0) { 
+                showToast('❌ 請填寫正確的日期與步數！'); 
+                return; 
+            }
+            
+            stepRecords[dateStr] = steps;
+            localStorage.setItem('stepRecords', JSON.stringify(stepRecords));
+            document.getElementById('stepsInput').value = '';
+            updateProgressBar();
+            renderAllSteps();
+            showToast('🎉 今日步數儲存成功，繼續保持熱情！');
+        }
+
+        function deleteRecord(dateStr) {
+            if (confirm(`確定刪除 ${dateStr} 的歷史步數紀錄嗎？`)) {
+                delete stepRecords[dateStr];
+                localStorage.setItem('stepRecords', JSON.stringify(stepRecords));
+                renderAllSteps();
+                showToast('🗑️ 已成功刪除該筆紀錄。');
+            }
+        }
+
+        function handleSmartPaste(event) {
+            setTimeout(() => {
+                const pasteText = document.getElementById('smartInput').value;
+                if (!pasteText) return;
+
+                const cleanText = pasteText.replace(/,/g, '');
+                const stepMatch = cleanText.match(/(\d+)\s*步/) || cleanText.match(/步數\s*[:：]\s*(\d+)/) || cleanText.match(/(\d{4,6})/);
+                const dateMatch = cleanText.match(/(\d{4}[-\/\.]\d{1,2}[-\/\.]\d{1,2})/);
+
+                if (stepMatch) {
+                    const detectedSteps = parseInt(stepMatch[1], 10);
+                    document.getElementById('stepsInput').value = detectedSteps;
+                    
+                    if (dateMatch) {
+                        const formattedDate = dateMatch[1].replace(/[\/\.]/g, '-');
+                        document.getElementById('dateInput').value = formattedDate;
+                    } else {
+                        document.getElementById('dateInput').valueAsDate = new Date();
+                    }
+
+                    updateProgressBar();
+                    saveRecord();
+                    document.getElementById('smartInput').value = '';
+                } else {
+                    showToast('❌ 無法智慧識別文字，請確認內容或手動輸入。');
+                }
+            }, 100);
+        }
+
+        function calculateStreak() {
+            let streak = 0;
+            let today = new Date();
+            let checkDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            
+            let todayStr = checkDate.toISOString().slice(0, 10);
+            checkDate.setDate(checkDate.getDate() - 1);
+            let yesterdayStr = checkDate.toISOString().slice(0, 10);
+
+            if (!(stepRecords[todayStr] >= TARGET) && !(stepRecords[yesterdayStr] >= TARGET)) {
+                return 0; 
+            }
+
+            checkDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            while (true) {
+                let dStr = checkDate.toISOString().slice(0, 10);
+                if (stepRecords[dStr] >= TARGET) {
+                    streak++;
+                    checkDate.setDate(checkDate.getDate() - 1);
+                } else {
+                    if (dStr === todayStr && stepRecords[todayStr] === undefined) {
+                        checkDate.setDate(checkDate.getDate() - 1);
+                        continue;
+                    }
+                    break;
+                }
+            }
+            return streak;
+        }
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            grid.innerHTML = '';
+            
+            const heads = ['日','一','二','三','四','五','六'];
+            heads.forEach(h => grid.innerHTML += `<div class="text-charcoal/50 text-[10px] py-1">${h}</div>`);
+
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth();
+
+            const firstDayIdx = new Date(year, month, 1).getDay();
+            const totalDays = new Date(year, month + 1, 0).getDate();
+
+            for (let i = 0; i < firstDayIdx; i++) {
+                grid.innerHTML += `<div class="aspect-square opacity-10"></div>`;
+            }
+
+            for (let day = 1; day <= totalDays; day++) {
+                const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+                const steps = stepRecords[dateStr];
+                let statusClass = 'bg-cream-100 text-charcoal/70';
+                
+                if (steps !== undefined) {
+                    statusClass = steps >= TARGET 
+                        ? 'bg-sun-500 text-white font-black shadow-sm' 
+                        : 'bg-orange-100 text-sun-600 font-medium';
+                }
+                
+                grid.innerHTML += `<div class="aspect-square flex items-center justify-center rounded-lg text-[11px] ${statusClass}" title="${steps ? steps + '步' : '尚未記錄'}">${day}</div>`;
+            }
+        }
+
+        function renderChart() {
+            const sortedDates = Object.keys(stepRecords).sort((a, b) => new Date(a) - new Date(b));
+            const last7Dates = sortedDates.slice(-7);
+            const last7Steps = last7Dates.map(d => stepRecords[d]);
+
+            const ctx = document.getElementById('trendChart').getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: last7Dates.map(d => d.slice(5)),
+                    datasets: [{
+                        label: '每日步數',
+                        data: last7Steps,
+                        borderColor: '#E07A5F', // 太陽暖色調
+                        backgroundColor: 'rgba(224, 122, 95, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: '#E07A5F',
+                        pointBorderColor: '#FFFFFF',
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { 
+                            grid: { color: '#F5EFE2' },
+                            ticks: { color: '#3D3A36', font: { size: 10 } }
+                        },
+                        x: { 
+                            grid: { display: false },
+                            ticks: { color: '#3D3A36', font: { size: 10 } }
+                        }
+                    },
+                    plugins: { 
+                        legend: { display: false } 
+                    }
+                }
+            });
+        }
+
+        function renderAllSteps() {
+            const tbody = document.getElementById('historyBody');
+            tbody.innerHTML = '';
+            const sortedDates = Object.keys(stepRecords).sort((a, b) => new Date(b) - new Date(a));
+            
+            const currentMonthStr = new Date().toISOString().slice(0, 7);
+            let mTotal = 0, mCount = 0, mAchieved = 0;
+
+            sortedDates.forEach(date => {
+                const steps = stepRecords[date];
+                const isAchieved = steps >= TARGET;
+                if (date.startsWith(currentMonthStr)) {
+                    mTotal += steps; mCount++; if(isAchieved) mAchieved++;
+                }
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="p-3">${date}</td>
+                    <td class="p-3 font-bold">${steps.toLocaleString()} 步 ${isAchieved ? '👑' : ''}</td>
+                    <td class="p-3 text-center"><button type="button" onclick="deleteRecord('${date}')" class="text-red-500 hover:text-red-700 transition-colors">❌</button></td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            document.getElementById('totalSteps').innerText = mTotal.toLocaleString();
+            document.getElementById('avgSteps').innerText = mCount > 0 ? Math.round(mTotal/mCount).toLocaleString() : 0;
+            document.getElementById('achievedDays').innerText = mAchieved + ' 天';
+
+            const streak = calculateStreak();
+            const streakBadge = document.getElementById('streakContainer');
+            if (streak > 0) {
+                document.getElementById('streakDays').innerText = streak;
+                streakBadge.style.display = 'flex';
+            } else {
+                streakBadge.style.display = 'none';
+            }
+
+            renderCalendar();
+        }
+
+        function exportToCSV() {
+            const sortedDates = Object.keys(stepRecords).sort((a, b) => new Date(b) - new Date(a));
+            if (!sortedDates.length) return showToast('❌ 目前尚無任何紀錄可匯出');
+            let csv = "\uFEFF日期,步數,是否達標\r\n";
+            sortedDates.forEach(d => csv += `${d},${stepRecords[d]},${stepRecords[d]>=TARGET?'是':'否'}\r\n`);
+            downloadFile(new Blob([csv], {type:'text/csv;charset=utf-8;'}), `步數紀錄表_${new Date().toISOString().slice(0,10)}.csv`);
+        }
+
+        function exportBackup() {
+            const jsonStr = JSON.stringify(stepRecords);
+            downloadFile(new Blob([jsonStr], {type:'application/json'}), `步數備份_${new Date().toISOString().slice(0,10)}.json`);
+        }
+
+        function importBackup(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (typeof imported === 'object' && imported !== null) {
+                        stepRecords = { ...stepRecords, ...imported };
+                        localStorage.setItem('stepRecords', JSON.stringify(stepRecords));
+                        renderAllSteps();
+                        showToast('🎉 資料成功還原與合併！');
+                    }
+                } catch(err) { 
+                    showToast('❌ 檔案還原失敗，請檢查格式是否正確。'); 
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function downloadFile(blob, filename) {
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute("download", filename);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // 4. 下載此完整 HTML 檔案的功能（智慧保留當前狀態，下載回自己電腦隨開隨用）
         function downloadSelf() {
             try {
-                // 複製當前的 HTML 內容
                 const docType = "<!DOCTYPE html>\n";
                 const htmlContent = document.documentElement.outerHTML;
                 const fullContent = docType + htmlContent;
 
-                // 轉換為 Blob，並透過臨時連結觸發下載
                 const blob = new Blob([fullContent], { type: 'text/html;charset=utf-8' });
                 const url = URL.createObjectURL(blob);
                 
                 const tempAnchor = document.createElement('a');
                 tempAnchor.href = url;
-                tempAnchor.download = 'sunny_portfolio.html'; // 檔案預設名稱
+                tempAnchor.download = 'sunny_hub.html';
                 document.body.appendChild(tempAnchor);
-                
-                // 觸發點擊下載
                 tempAnchor.click();
                 
-                // 清理記憶體
                 document.body.removeChild(tempAnchor);
                 URL.revokeObjectURL(url);
                 
-                showToast('📥 網頁下載成功！快去打開 sunny_portfolio.html 瞧瞧吧！');
+                showToast('📥 網頁已成功打包下載！您隨時可以離線開啟，保留所有分頁與小工具！');
             } catch (err) {
-                // 安全退回：若是環境限制則用備用方案提示
-                showToast('❌ 下載時遇到微風阻擋，請使用鍵盤 Ctrl+S / Cmd+S 將此預覽頁面直接儲存！');
+                showToast('❌ 下載受限，請直接在鍵盤上按下 Ctrl+S 或 Cmd+S 進行頁面儲存！');
             }
         }
+
+        // 初始化渲染
+        renderAllSteps();
     </script>
 </body>
 </html>
